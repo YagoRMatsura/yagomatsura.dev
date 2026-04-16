@@ -6,7 +6,7 @@
 
 **Architecture:** Single-page home with anchor-linked sections, plus a dedicated blog area at `/blog`. Astro content collections (typed with Zod) hold blog posts, projects, and experience entries. Astro's built-in i18n routing serves the PT default at `/` and EN at `/en/`. Near-zero JavaScript ships — only the language toggle is interactive.
 
-**Tech Stack:** Astro v5, MDX, Tailwind CSS v4, TypeScript, Fontsource (Inter + JetBrains Mono), Shiki, `@astrojs/sitemap`, `@astrojs/rss`, Vercel hosting, GitHub Actions CI.
+**Tech Stack:** Astro v6 (scaffold default at time of build), MDX, Tailwind CSS v4, TypeScript, Fontsource (Inter + JetBrains Mono), Shiki, `@astrojs/sitemap`, `@astrojs/rss`, Vercel hosting, GitHub Actions CI.
 
 **Spec:** [`docs/superpowers/specs/2026-04-16-portfolio-website-design.md`](../specs/2026-04-16-portfolio-website-design.md)
 

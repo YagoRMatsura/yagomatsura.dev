@@ -20,3 +20,6 @@ dist/
 
 # brainstorming workspace (local tooling, not source)
 .superpowers/
+
+# Claude Code local workspace
+.claude/
