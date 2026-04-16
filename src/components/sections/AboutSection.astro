@@ -1,0 +1,57 @@
+---
+import TagChip from '../TagChip.astro';
+import Section from '../Section.astro';
+import { t, type Lang } from '../../i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const dict = t(lang);
+
+const narrative = {
+  pt: [
+    'Estudante de Direito (Unicesumar) e Ciência da Computação (Uninter), atualmente em transição consolidada para tecnologia. Dois anos como Support Engineer na Atlassian, atendendo clientes como Apple e Warner Bros. Games, me deram a base técnica em Git, Linux, automação e troubleshooting.',
+    'A formação jurídica não é um detour — é uma vantagem competitiva para legal tech, propriedade intelectual e tech policy, áreas onde entender direito e engenharia é raro e valioso.',
+  ],
+  en: [
+    'Law (Unicesumar) and Computer Science (Uninter) dual-major student, currently transitioning into tech. Two years as a Support Engineer at Atlassian — serving clients like Apple and Warner Bros. Games — built my technical foundation in Git, Linux, automation, and deep troubleshooting.',
+    'The law background is not a detour — it is a competitive edge for legal tech, IP, and tech policy, fields where understanding both law and engineering is rare and valuable.',
+  ],
+}[lang];
+
+const skills = [
+  'Git', 'Bitbucket', 'SQL', 'Linux', 'macOS', 'Docker',
+  'SSL', 'SSH', 'HTTP', 'Python', 'Bash', 'Jira', 'Scrum', 'Kanban',
+];
+
+const education = [
+  { name: 'Direito · Unicesumar', year: 2027 },
+  { name: 'Ciência da Computação · Uninter', year: 2028 },
+];
+---
+<Section id="about" title={dict.sections.about}>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div class="md:col-span-2 space-y-4 text-[var(--color-text-secondary)] leading-relaxed">
+      {narrative.map((p) => <p>{p}</p>)}
+    </div>
+    <aside class="space-y-6 text-sm">
+      <div>
+        <p class="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--color-text-muted)] mb-2">{dict.about.englishLabel}</p>
+        <p class="text-[var(--color-text-primary)]">{dict.about.englishLevel}</p>
+      </div>
+      <div>
+        <p class="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--color-text-muted)] mb-2">{dict.about.educationLabel}</p>
+        <ul class="space-y-1 text-[var(--color-text-secondary)]">
+          {education.map((e) => <li>{e.name} <span class="text-[var(--color-text-muted)]">({dict.about.concluding(e.year)})</span></li>)}
+        </ul>
+      </div>
+    </aside>
+  </div>
+  <div class="mt-10">
+    <p class="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--color-text-muted)] mb-3">{dict.about.skillsLabel}</p>
+    <div class="flex flex-wrap gap-2">
+      {skills.map((s) => <TagChip label={s} />)}
+    </div>
+  </div>
+</Section>

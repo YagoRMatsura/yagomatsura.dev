@@ -1,0 +1,30 @@
+---
+import Section from '../Section.astro';
+import { t, type Lang } from '../../i18n';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const dict = t(lang);
+
+const links = [
+  { label: dict.contact.emailLabel, href: 'mailto:yagomatsuraswe@gmail.com', text: 'yagomatsuraswe@gmail.com' },
+  { label: 'LinkedIn', href: 'https://linkedin.com/in/yago-matsura/', text: 'linkedin.com/in/yago-matsura' },
+  { label: 'GitHub', href: 'https://github.com/YagoRMatsura', text: 'github.com/YagoRMatsura' },
+];
+---
+<Section id="contact" title={dict.sections.contact}>
+  <ul class="space-y-4 text-sm sm:text-base">
+    {links.map(({ label, href, text }) => (
+      <li class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
+        <span class="font-mono text-xs uppercase tracking-wider text-[var(--color-text-muted)] w-24 shrink-0">{label}</span>
+        <a href={href} rel="noopener" class="text-[var(--color-text-primary)] hover:text-[var(--color-accent)] underline underline-offset-4 decoration-[var(--color-border)] hover:decoration-[var(--color-accent)] transition-colors">{text}</a>
+      </li>
+    ))}
+  </ul>
+  <a
+    href="/resume.pdf"
+    class="inline-flex items-center gap-2 mt-8 rounded border border-[var(--color-accent)] text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-bg)] px-4 py-2 font-mono text-xs uppercase tracking-wider transition-colors"
+  >
+    ↓ {dict.contact.cvLabel}
+  </a>
+</Section>
