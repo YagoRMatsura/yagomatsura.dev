@@ -1,0 +1,22 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+.astro/
+.vercel/
+
+# env
+.env
+.env.local
+.env.production
+
+# OS
+.DS_Store
+
+# editor
+.vscode/
+.idea/
+
+# brainstorming workspace (local tooling, not source)
+.superpowers/
