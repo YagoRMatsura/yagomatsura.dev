@@ -1,0 +1,43 @@
+---
+import { t, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const dict = t(lang);
+
+const links = [
+  { href: 'https://github.com/YagoRMatsura', label: dict.hero.links.github, external: true },
+  { href: 'https://linkedin.com/in/yago-matsura/', label: dict.hero.links.linkedin, external: true },
+  { href: 'mailto:yagomatsuraswe@gmail.com', label: dict.hero.links.email, external: false },
+  { href: '/resume.pdf', label: dict.hero.links.cv, external: false },
+];
+---
+<section class="fade-in py-20 sm:py-28">
+  <div class="max-w-[880px] mx-auto px-5">
+    <p class="text-xs font-mono uppercase tracking-[0.2em] text-[var(--color-text-muted)] mb-4">
+      {dict.hero.location}
+    </p>
+    <h1 class="text-4xl sm:text-6xl font-bold tracking-[-0.02em] leading-[1.05] mb-6">
+      Yago Matsura<span class="text-[var(--color-accent)]">.</span>
+    </h1>
+    <p class="text-lg sm:text-xl text-[var(--color-text-secondary)] max-w-[640px] leading-relaxed">
+      {dict.hero.tagline}
+    </p>
+    <ul class="flex flex-wrap gap-x-5 gap-y-2 mt-8 text-sm">
+      {links.map(({ href, label, external }) => (
+        <li>
+          <a
+            href={href}
+            class="text-[var(--color-text-primary)] hover:text-[var(--color-accent)] underline underline-offset-4 decoration-[var(--color-border)] hover:decoration-[var(--color-accent)] transition-colors"
+            {...external ? { rel: 'noopener', target: '_blank' } : {}}
+          >
+            {label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

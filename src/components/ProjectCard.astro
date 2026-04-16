@@ -1,0 +1,39 @@
+---
+import TagChip from './TagChip.astro';
+import { t, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  stack: string[];
+  githubUrl?: string;
+  demoUrl?: string;
+}
+
+const { lang, title, description, stack, githubUrl, demoUrl } = Astro.props;
+const dict = t(lang);
+---
+<article class="rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] p-5 flex flex-col gap-3 hover:border-[var(--color-accent)] transition-colors">
+  <h3 class="text-lg font-semibold">{title}</h3>
+  <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed flex-1">{description}</p>
+  {stack.length > 0 && (
+    <div class="flex flex-wrap gap-2">
+      {stack.map((s) => <TagChip label={s} />)}
+    </div>
+  )}
+  {(githubUrl || demoUrl) && (
+    <div class="flex gap-4 text-sm font-mono uppercase tracking-wider pt-1">
+      {githubUrl && (
+        <a href={githubUrl} rel="noopener" target="_blank" class="text-[var(--color-accent)] hover:text-[var(--color-accent-hover)] transition-colors">
+          {dict.projects.viewGithub} →
+        </a>
+      )}
+      {demoUrl && (
+        <a href={demoUrl} rel="noopener" target="_blank" class="text-[var(--color-accent)] hover:text-[var(--color-accent-hover)] transition-colors">
+          {dict.projects.viewDemo} →
+        </a>
+      )}
+    </div>
+  )}
+</article>

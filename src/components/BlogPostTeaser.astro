@@ -1,0 +1,39 @@
+---
+import TagChip from './TagChip.astro';
+import { t, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  date: Date;
+  readingTime: number;
+  excerpt: string;
+  tags: string[];
+  href: string;
+}
+
+const { lang, title, date, readingTime, excerpt, tags, href } = Astro.props;
+const dict = t(lang);
+
+const dateStr = date.toLocaleDateString(lang === 'pt' ? 'pt-BR' : 'en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
+---
+<article class="py-5 border-b border-[var(--color-border)] last:border-b-0">
+  <a href={href} class="block group">
+    <div class="flex items-baseline gap-3 text-xs font-mono text-[var(--color-text-muted)] uppercase tracking-wider mb-2">
+      <time datetime={date.toISOString()}>{dateStr}</time>
+      <span>·</span>
+      <span>{dict.blog.readingTime(readingTime)}</span>
+    </div>
+    <h3 class="text-lg font-semibold group-hover:text-[var(--color-accent)] transition-colors">{title}</h3>
+    <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed mt-2">{excerpt}</p>
+    {tags.length > 0 && (
+      <div class="flex flex-wrap gap-2 mt-3">
+        {tags.map((tg) => <TagChip label={tg} />)}
+      </div>
+    )}
+  </a>
+</article>
