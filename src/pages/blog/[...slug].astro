@@ -1,0 +1,56 @@
+---
+import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import { readingTimeMinutes } from '../../lib/reading-time.ts';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const posts = await getCollection('blog');
+  // PT posts: ids that do NOT start with "en/"
+  const ptPosts = posts.filter((p) => p.data.lang === 'pt');
+  const sorted = ptPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+  return sorted.map((post, i) => ({
+    params: { slug: post.id },
+    props: {
+      post,
+      prev: sorted[i + 1] ?? null,  // older post = "previous" in chronological reading
+      next: sorted[i - 1] ?? null,
+    },
+  }));
+};
+
+type Props = {
+  post: CollectionEntry<'blog'>;
+  prev: CollectionEntry<'blog'> | null;
+  next: CollectionEntry<'blog'> | null;
+};
+
+const { post, prev, next } = Astro.props as Props;
+const { Content } = await render(post);
+
+const readingTime = readingTimeMinutes(post.body ?? '');
+
+// If translation exists (post with matching `translationOf` in EN), build its href.
+let translationHref: string | undefined;
+if (post.data.translationOf) {
+  translationHref = `/en/blog/${post.data.translationOf}/`;
+}
+
+const prevNav = prev ? { href: `/blog/${prev.id}/`, title: prev.data.title } : undefined;
+const nextNav = next ? { href: `/blog/${next.id}/`, title: next.data.title } : undefined;
+---
+<BlogPostLayout
+  lang="pt"
+  title={post.data.title}
+  date={post.data.date}
+  readingTime={readingTime}
+  tags={post.data.tags}
+  excerpt={post.data.excerpt}
+  ogImage={post.data.ogImage}
+  translationHref={translationHref}
+  prev={prevNav}
+  next={nextNav}
+>
+  <Content />
+</BlogPostLayout>

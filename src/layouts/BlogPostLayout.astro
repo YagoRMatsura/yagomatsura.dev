@@ -1,0 +1,96 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import TagChip from '../components/TagChip.astro';
+import { t, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  date: Date;
+  readingTime: number;
+  tags: string[];
+  excerpt: string;
+  ogImage?: string;
+  /** Path to the counterpart post in the other language (if any). */
+  translationHref?: string;
+  /** Prev/next navigation. */
+  prev?: { href: string; title: string };
+  next?: { href: string; title: string };
+}
+
+const {
+  lang,
+  title,
+  date,
+  readingTime,
+  tags,
+  excerpt,
+  ogImage,
+  translationHref,
+  prev,
+  next,
+} = Astro.props;
+
+const dict = t(lang);
+const dateStr = date.toLocaleDateString(lang === 'pt' ? 'pt-BR' : 'en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+<BaseLayout title={title} description={excerpt} lang={lang} ogImage={ogImage}>
+  <article class="max-w-[720px] mx-auto px-5 py-12">
+    <header class="mb-10">
+      <div class="flex items-baseline gap-3 text-xs font-mono text-[var(--color-text-muted)] uppercase tracking-wider mb-4">
+        <time datetime={date.toISOString()}>{dateStr}</time>
+        <span>·</span>
+        <span>{dict.blog.readingTime(readingTime)}</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-bold tracking-tight leading-[1.15]">{title}</h1>
+      {tags.length > 0 && (
+        <div class="flex flex-wrap gap-2 mt-5">
+          {tags.map((tg) => <TagChip label={tg} />)}
+        </div>
+      )}
+      {translationHref && (
+        <p class="mt-5">
+          <a href={translationHref} class="text-sm text-[var(--color-accent)] hover:text-[var(--color-accent-hover)] transition-colors">
+            {dict.blog.translationAvailable}
+          </a>
+        </p>
+      )}
+    </header>
+    <div class="prose-article">
+      <slot />
+    </div>
+    <hr class="my-12 border-[var(--color-border)]" />
+    <nav class="flex items-center justify-between gap-4 text-sm">
+      {prev ? (
+        <a href={prev.href} class="flex flex-col gap-1 hover:text-[var(--color-accent)] transition-colors max-w-[48%]">
+          <span class="font-mono text-xs uppercase tracking-wider text-[var(--color-text-muted)]">{dict.blog.prev}</span>
+          <span>{prev.title}</span>
+        </a>
+      ) : <span />}
+      {next ? (
+        <a href={next.href} class="flex flex-col gap-1 items-end text-right hover:text-[var(--color-accent)] transition-colors max-w-[48%]">
+          <span class="font-mono text-xs uppercase tracking-wider text-[var(--color-text-muted)]">{dict.blog.next}</span>
+          <span>{next.title}</span>
+        </a>
+      ) : <span />}
+    </nav>
+  </article>
+</BaseLayout>
+
+<style is:global>
+  .prose-article { color: var(--color-text-secondary); line-height: 1.75; font-size: 1.0625rem; }
+  .prose-article h2 { color: var(--color-text-primary); font-size: 1.5rem; font-weight: 600; margin-top: 2.5rem; margin-bottom: 1rem; letter-spacing: -0.01em; }
+  .prose-article h3 { color: var(--color-text-primary); font-size: 1.25rem; font-weight: 600; margin-top: 2rem; margin-bottom: 0.75rem; }
+  .prose-article p { margin-bottom: 1.25rem; }
+  .prose-article a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 3px; }
+  .prose-article a:hover { color: var(--color-accent-hover); }
+  .prose-article ul, .prose-article ol { padding-left: 1.5rem; margin-bottom: 1.25rem; }
+  .prose-article li { margin-bottom: 0.5rem; }
+  .prose-article code:not(pre code) { background: var(--color-surface); padding: 2px 6px; border-radius: 4px; font-size: 0.875em; color: var(--color-text-primary); }
+  .prose-article blockquote { border-left: 2px solid var(--color-accent); padding-left: 1rem; margin: 1.5rem 0; color: var(--color-text-secondary); font-style: italic; }
+  .prose-article img { border-radius: 8px; margin: 1.5rem 0; }
+</style>
