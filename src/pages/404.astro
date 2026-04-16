@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { t } from '../i18n';
+
+const lang = 'pt' as const;
+const dict = t(lang);
+---
+<BaseLayout title="404" description={dict.notFound.body} lang={lang}>
+  <div class="max-w-[720px] mx-auto px-5 py-24 text-center">
+    <p class="font-mono text-6xl text-[var(--color-accent)] mb-4">404</p>
+    <h1 class="text-2xl font-semibold mb-3">{dict.notFound.title}</h1>
+    <p class="text-[var(--color-text-secondary)] mb-8">{dict.notFound.body}</p>
+    <a href="/" class="font-mono text-sm uppercase tracking-wider text-[var(--color-accent)] hover:text-[var(--color-accent-hover)] transition-colors">
+      {dict.notFound.home}
+    </a>
+  </div>
+</BaseLayout>
