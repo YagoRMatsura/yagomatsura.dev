@@ -1,0 +1,40 @@
+---
+import { switchLangPath, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+  currentPath: string;
+}
+
+const { lang, currentPath } = Astro.props;
+
+const ptHref = switchLangPath(currentPath, 'pt');
+const enHref = switchLangPath(currentPath, 'en');
+---
+<div class="flex items-center gap-1 text-xs font-mono uppercase tracking-wider">
+  <a
+    href={ptHref}
+    aria-current={lang === 'pt' ? 'true' : 'false'}
+    class:list={[
+      'px-2 py-1 rounded transition-colors',
+      lang === 'pt'
+        ? 'bg-[var(--color-surface)] text-[var(--color-text-primary)]'
+        : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
+    ]}
+  >
+    PT
+  </a>
+  <span class="text-[var(--color-text-muted)]">/</span>
+  <a
+    href={enHref}
+    aria-current={lang === 'en' ? 'true' : 'false'}
+    class:list={[
+      'px-2 py-1 rounded transition-colors',
+      lang === 'en'
+        ? 'bg-[var(--color-surface)] text-[var(--color-text-primary)]'
+        : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
+    ]}
+  >
+    EN
+  </a>
+</div>

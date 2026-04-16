@@ -1,0 +1,100 @@
+---
+import '../styles/globals.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import type { Lang } from '../i18n';
+
+interface Props {
+  title: string;
+  description: string;
+  lang: Lang;
+  ogImage?: string;
+  /** When true, the page renders JSON-LD Person schema. Default: false. */
+  includePersonSchema?: boolean;
+}
+
+const {
+  title,
+  description,
+  lang,
+  ogImage = '/og-image.png',
+  includePersonSchema = false,
+} = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
+const ogImageUrl = new URL(ogImage, Astro.site).toString();
+---
+<!DOCTYPE html>
+<html lang={lang === 'pt' ? 'pt-BR' : 'en'}>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonicalUrl} />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+  <link rel="sitemap" href="/sitemap-index.xml" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:image" content={ogImageUrl} />
+  <meta property="og:locale" content={lang === 'pt' ? 'pt_BR' : 'en_US'} />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImageUrl} />
+
+  {includePersonSchema && (
+    <script is:inline type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      name: 'Yago Matsura',
+      url: 'https://yagomatsura.dev',
+      sameAs: [
+        'https://github.com/YagoRMatsura',
+        'https://linkedin.com/in/yago-matsura/',
+      ],
+      jobTitle: lang === 'pt'
+        ? 'Estudante de Direito e Ciência da Computação'
+        : 'Law and Computer Science student',
+      alumniOf: [
+        { '@type': 'CollegeOrUniversity', name: 'Unicesumar' },
+        { '@type': 'CollegeOrUniversity', name: 'Uninter' },
+      ],
+    })} />
+  )}
+</head>
+<body class="bg-[var(--color-bg)] text-[var(--color-text-primary)]">
+  <Nav lang={lang} currentPath={Astro.url.pathname} />
+  <main id="main">
+    <slot />
+  </main>
+  <Footer lang={lang} />
+
+  <script>
+    // Scroll-triggered fade-in for .fade-in elements
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduced && 'IntersectionObserver' in window) {
+      const obs = new IntersectionObserver((entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-visible');
+            obs.unobserve(e.target);
+          }
+        }
+      }, { threshold: 0.1 });
+      document.querySelectorAll('.fade-in').forEach((el) => obs.observe(el));
+    } else {
+      // Reduced motion or no IO support: show immediately
+      document.querySelectorAll('.fade-in').forEach((el) => el.classList.add('is-visible'));
+    }
+  </script>
+</body>
+</html>

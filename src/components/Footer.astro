@@ -1,0 +1,26 @@
+---
+import { t, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const dict = t(lang);
+const year = new Date().getFullYear();
+---
+<footer class="border-t border-[var(--color-border)] mt-24 py-8">
+  <div class="max-w-[880px] mx-auto px-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-sm text-[var(--color-text-muted)]">
+    <p>© {year} Yago Matsura</p>
+    <p>
+      {dict.footer.builtWith.split('·')[0]}·
+      <a
+        href="https://github.com/YagoRMatsura/yagomatsura.dev"
+        class="hover:text-[var(--color-text-primary)] transition-colors"
+        rel="noopener"
+      >
+        {dict.footer.builtWith.split('·')[1]?.trim()}
+      </a>
+    </p>
+  </div>
+</footer>
