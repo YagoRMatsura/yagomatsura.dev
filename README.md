@@ -1,43 +1,33 @@
-# Astro Starter Kit: Minimal
+# yagomatsura.dev
 
-```sh
-npm create astro@latest -- --template minimal
+Personal portfolio for Yago Matsura — law + computer science student, transitioning into tech, focused on legal tech / IP / tech policy.
+
+Built with [Astro](https://astro.build) · Tailwind CSS · MDX · deployed on Vercel.
+
+## Local development
+
+```bash
+npm install
+npm run dev       # http://localhost:4321
+npm run build     # production build → dist/
+npm run preview   # preview production build
+npx astro check   # typecheck + content-collection validation
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Content
 
-## 🚀 Project Structure
+All content lives in `src/content/`:
 
-Inside of your Astro project, you'll see the following folders and files:
+- `blog/` — Portuguese posts as `.mdx` files
+- `blog/en/` — English posts as `.mdx` files
+- `projects/` — project case studies
+- `experience/` — company/role entries
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+Frontmatter is validated at build time by Zod schemas in `src/content.config.ts`.
+Drafts (`draft: true`) are visible in development and hidden in production builds.
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Deploy
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- Push to `main` → Vercel deploys automatically
+- Pull requests get preview URLs from Vercel
+- Custom domain `yagomatsura.dev` configured in the Vercel dashboard
