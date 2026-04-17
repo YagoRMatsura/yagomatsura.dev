@@ -26,6 +26,11 @@ All content lives in `src/content/`:
 Frontmatter is validated at build time by Zod schemas in `src/content.config.ts`.
 Drafts (`draft: true`) are visible in development and hidden in production builds.
 
+A local form-based admin for blog and project entries is available at
+`http://localhost:4321/keystatic` while `npm run dev` is running. It writes
+directly to the MDX files under `src/content/` — commit the changes as usual.
+The admin is excluded from production builds.
+
 ## Deploy
 
 - Push to `main` → Vercel deploys automatically
